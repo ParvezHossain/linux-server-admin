@@ -1,0 +1,9 @@
+HOST server1
+    Hostname 192.168.1.10
+    Port 22
+    User username
+
+Host server2
+    Hostname 192.168.1.11
+    Port 22
+    User username
