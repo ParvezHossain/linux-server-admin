@@ -1,9 +1,29 @@
 
-Security and Monitoring
+## Security and Monitoring
 
     sudo apt install -y ufw fail2ban
 
-Lynis (Security Auditing Tool)
+Edit the Fail2ban configuration file for SSH (/etc/fail2ban/jail.local or /etc/fail2ban/jail.d/ssh.conf). You can create or edit a specific configuration file for SSH rules:
+      
+    sudo nano /etc/fail2ban/jail.local
+
+Add the following configuration (or modify it if it exists):
+
+    [sshd]
+    enabled = true
+    port = ssh
+    filter = sshd
+    logpath = /var/log/auth.log
+    maxretry = 3
+    bantime = 3600
+
+Restart the service after modification
+
+    sudo systemctl start fail2ban
+    sudo systemctl enable fail2ban
+    sudo systemctl status fail2ban
+
+## Lynis (Security Auditing Tool)
 
     sudo apt install -y lynis
 

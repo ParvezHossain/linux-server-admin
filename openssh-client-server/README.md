@@ -25,16 +25,118 @@ This will prompt for the remote pc password for that specific user
 
 ## Using Server Names for Login Instead of IP Addresses
 
+Go to the ssh folder
+
+    cd ~/.ssh
+
+you might need to create the .ssh folder if it does not exist
+
+    mkdir ~/.ssh
+
 To enhance security and convenience, map server names to their respective IP addresses in your local configuration. This enables logging into servers without remembering their IP addresses, usernames, or passwords. Ensure that this configuration file's permissions restrict access to the current user for security purposes.
 
 This setup simplifies remote access from your PC to designated servers, enhancing usability while maintaining security by guarding against unauthorized access to sensitive login information.
 
-    cd ~/.ssh
     touch config
 
-see the content to the config file
+see the contents to the config file
 
-## Using public / private ssh key
+## Generating SSH Keys Safely in your server (private / public key)
+
+Check Existing Keys: Ensure that the /home/username/.ssh/id_rsa file is empty before generating new keys. Overwriting existing keys might lead to access issues with remote servers.
+
+    ls -l ~/.ssh/id_rsa
+
+Generate SSH Keys: If the file is empty or doesn't exist, proceed with key generation:
+
+    ssh-keygen -t rsa -b 4096
+    chmod 700 ~/.ssh
+    chmod 600 ~/.ssh/authorized_keys
+
+Follow Prompts: Follow the prompts to specify a filename (if needed) and passphrase. Be cautious while choosing the filename to avoid overwriting existing keys unintentionally.
+
+Check Generated Keys: After generation, confirm that the new keys are created and accessible:
+
+    ls -l ~/.ssh/id_rsa*
+
+Use Caution: Take care not to overwrite existing keys inadvertently, as this may prevent access to remote servers. Back up existing keys if necessary.
+
+#### Logging to the remote server without password
+
+copy the content of id_rsa.pub file to those client server where from you want to connect to. Make a directory to the remote server.
+
+    ssh username@192.168.1.10
+    cd ~/.ssh
+    sudo mkdir authorized_keys
+
+copy the id_rsa.pub content to the the authorized_keys
+
+ssh -v username@192.168.1.10
+
+## Disable password authentication
+
+    sudo rm id_rsa*
+    ssh-keygen -t rsa -b 4096
+
+copy the id_rsa.pub content to the remote server /home/username/.ssh/authorized_keys file
+
+## Copy the ssh key to the remote server
+
+    ssh-copy-id -i ~/.ssh/id_rsa.pub root@192.168.1.10
+
+here, -i for input file
+
+## Managing Multiple SSH Keys for Different Servers
+
+To differentiate between encryption algorithms and easily identify keys for multiple servers:
+
+Selecting Encryption Algorithm: Choose a specific encryption algorithm using ssh-keygen. For instance, use ed25519 for a specific client:
+
+    ssh-keygen -t ed25519 -C "Autoheinen_14_6"
+
+Customized Key Saving Location: To help remember the algorithm and client, adjust the key saving location:
+
+    /home/username/.ssh/Autoheinen_14_6_id_ed25519
+
+Then copy the content of the Autoheinen_14_6_id_ed25519.pub to the remote server authorized_keys file
+
+    ssh-copy-id -i ~/.ssh/Autoheinen_14_6_id_ed25519.pub username@192.168.1.10
+    ssh -i ~/.ssh/Autoheinen_14_6_id_ed25519.pub username@192.168.1.10
+
+## SSH-Agent
+
+check ssh-agent is running or not
+
+    ps aux | grep ssh-agent
+
+start ssh-agent
+
+    eval "$(ssh-agent)"
+
+Cache the ssh private key to the ssh-agent
+
+    ssh-add ~/.ssh/Autoheinen_14_6_id_ed25519
+    ssh-add ~/.ssh/you_private_key
+
+## Configuring OpenSSH (OpenSSH Server) server component
+
+    which sshd
+    sudo systemctl status sshd
+    sudo systemctl restart sshd
+    systemctl stop sshd (be careful if you don't directly access to the server physically)
+    sudo systemctl enable sshd
+
+    cd /etc/ssh
+
+Read / modify the file cat /etc/ssh/sshd_config
+
+    Port 22 => 2222
+    PermitRootLogin yes => no
+    MaxAuthTries 6 => 2
+    MaxSessions 10 > 2
+    PasswordAuthentication yes => no
+    ClientAliveInterval
+    ClientAliveCountMax
 
 ## Break down the .ssh folder contents
 
