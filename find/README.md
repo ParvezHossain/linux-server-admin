@@ -31,7 +31,7 @@ The find command is flexible and can be tailored to specific search criteria, ma
 
 5. Search by Modification Time
 
-        find /path/to/search -mtime -N
+        find /path/to/search -mtime -N [N is in number]
 
 6. Search by Size
 
