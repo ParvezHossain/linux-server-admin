@@ -205,3 +205,17 @@ Usage:
 
     sudo add-apt-repository universe
     sudo apt install -y htop neofetch cmatrix net-tools vim nano curl wget git tree unzip
+
+
+## glances
+
+glances is used to monitor a server's resouce and paths
+
+    sudo apt install glances
+
+## vnstat -i wlo1
+
+glances is used to monitor a server's incoming and outgoin bandwidth
+
+    sudo apt install vnstat
+    vnstat -h 
