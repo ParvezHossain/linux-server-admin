@@ -213,7 +213,7 @@ glances is used to monitor a server's resouce and paths
 
     sudo apt install glances
 
-## vnstat -i wlo1
+## vnstat
 
 glances is used to monitor a server's incoming and outgoin bandwidth
 
