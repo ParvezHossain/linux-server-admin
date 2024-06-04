@@ -1,0 +1,2 @@
+https://github.com/ParvezHossain/linux-server-admin/raw/main/NFS/README.md
+https://github.com/ParvezHossain/linux-server-admin/raw/main/nginx/nginx.conf
